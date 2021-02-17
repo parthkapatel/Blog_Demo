@@ -10,7 +10,6 @@ if(isset($_SESSION['email']) and (empty($_REQUEST['id']) or !isset($_REQUEST['id
 
     if(isset($_REQUEST['data']))
     {
-
         $arr = $conn->dataValidation($_REQUEST['name'],$_REQUEST['gender'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['phone']);
         if(isset($arr["name"]))
             $errName = $arr["name"];
@@ -27,7 +26,6 @@ if(isset($_SESSION['email']) and (empty($_REQUEST['id']) or !isset($_REQUEST['id
             header("Refresh:2 url=home.php ");
         } else if (is_string($_REQUEST['data']) and count($arr) == 0 ) {
             $result = $conn->checkEmail($_REQUEST['email']);
-
             if ($result > 0) {
                 $msg = "Email id already exists.";
                 $chk = false;
@@ -66,7 +64,7 @@ if(isset($_SESSION['email']) and (empty($_REQUEST['id']) or !isset($_REQUEST['id
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   </head>
-  <body >
+  <body>
     <div class="container-fluid m-0 p-0 bg-dark" style="min-height:657px;">
             <div class="container-fluid m-0 p-0">
                 <?php

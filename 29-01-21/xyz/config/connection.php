@@ -5,19 +5,16 @@ class connection
     private $serverName = "localhost";
     private $userName = "root";
     private $password = "";
-    private $dbName = "student_data";
+    private $dbName = "PDOExample";
 
     private $conn;
 
     public function __construct()
     {
 
-
     }
 
     public function DBConnect(){
-
-
         try {
             $createDB = "CREATE DATABASE IF NOT EXISTS $this->dbName";
             $this->conn = new PDO("mysql:host=$this->serverName",$this->userName,$this->password);
@@ -29,7 +26,6 @@ class connection
                     echo '<script>console.log('. json_encode("Database Connected", JSON_HEX_TAG) .')</script>';
             }
             $this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-
             return $this->conn;
         } catch (PDOException  $e) {
             echo $e->getMessage();
