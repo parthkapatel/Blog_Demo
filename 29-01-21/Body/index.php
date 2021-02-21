@@ -78,6 +78,7 @@
 <div class="container-fluid p-5 w-100 bg-info" id="users">
     <h1 class="h1 text-center">User Details</h1>
     <div class="container-fluid">
+
         <div class="table-responsive">
             <table class="table table-hover table-light usersTable">
                 <?php $data = $conn->getData($userId); ?>

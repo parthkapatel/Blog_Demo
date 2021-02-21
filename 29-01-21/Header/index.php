@@ -1,7 +1,7 @@
 
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top overflow-hidden" id="head">
-        <a class="navbar-brand text-light"  id="brand">Demo Webpage</a>
+        <a class="navbar-brand text-light" href="/Parth/29-01-21/" id="brand">Student Website</a>
         <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse"  aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -25,7 +25,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/Parth/29-01-21/blog/">Blogs</a>
-                    <a class="dropdown-item" href="/Parth/29-01-21/blog/val=mblogs">My Blogs</a>
+                    <a class="dropdown-item" href="/Parth/29-01-21/blog/?val=mblogs">My Blogs</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/Parth/29-01-21/uploadBlog/">Upload Blog</a>
                     </div>
@@ -41,7 +41,7 @@
                     </div>
 
                     <div class='nav-item'>
-                        <a class='nav-link btn btn-success text-white mx-1' href='logout.php'>Logout</a>
+                        <a class='nav-link btn btn-success text-white mx-1' href='/Parth/29-01-21/logout.php'>Logout</a>
                     </div>
                     <?php
                 }

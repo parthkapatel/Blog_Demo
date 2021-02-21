@@ -5,20 +5,20 @@ session_start();
     $conn = new Functions();
 
     if(!isset($_SESSION['email'])){
-        header("Location:login.php");
+        header("Location:/Parth/29-01-21/login.php");
     }
         $userEmail = $_SESSION['email'];
         $userId = $_SESSION['id'];
 
     if(isset($_REQUEST['del'])){
               $delmsg = $conn->deleteData($_REQUEST['del']);
-              header("Location:logout.php");
+            header("Location:/Parth/29-01-21/logout.php");
     }
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Parth KaPatel</title>
+    <title>Student Website</title>
     <link rel="icon" type="image/x-icon" href="assets/img/internet.png" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

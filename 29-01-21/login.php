@@ -31,6 +31,7 @@ if(isset($_SESSION['email'])){
             echo "hello";
             $_SESSION['email'] = $result['email'];
             $_SESSION['id'] = $result['id'];
+            $_SESSION['name'] = $result['name'];
             header("Location:home.php");
         }else if($result == false){
             $msg = "User id or password is worng!";
