@@ -26,7 +26,7 @@ class Functions
         try {
             $this->createTable();
             if ($id == "") {
-                $dataQuery = "INSERT INTO $this->student_details( name, gender, email,password, phone) VALUES (:name,:gender,:email,:password,:phone)";
+                    $dataQuery = "INSERT INTO $this->student_details( name, gender, email,password, phone) VALUES (:name,:gender,:email,:password,:phone)";
             } else {
                 $dataQuery = "update $this->student_details set name=:name ,gender=:gender ,email=:email ,password=:password ,phone=:phone where id=:id";
             }
@@ -263,15 +263,24 @@ class Functions
         }
     }
 
+    function getLastId(){
+        $getCountId = "select count(id) from posts where published = 1";
+        $stmt = $this->conn->prepare($getCountId);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
+    }
     function getBlogData($id, $str)
     {
         try {
-            if ($id == "" and $str == "") {  //&& $num == 0) {
-                $getBlogData = "Select s.name,b.id,b.user_id,b.title,b.image,b.body,b.published,b.created_at from $this->blog_posts b inner join $this->student_details s on b.user_id=s.id where published=1 ORDER BY created_at DESC";
-            } else if (is_numeric($id) and $str == "") {   //} && $num == 0){
+            if ($id == "" and $str == "") {
+                $getBlogData = "Select s.name,b.id,b.user_id,b.title,b.image,b.body,b.published,b.created_at from $this->blog_posts b inner join $this->student_details s on b.user_id=s.id where published=1 ORDER BY created_at DESC LIMIT 3 ";
+            } else if ($id == "" and is_numeric($str)) {
+                $getBlogData = "Select s.name,b.id,b.user_id,b.title,b.image,b.body,b.published,b.created_at from $this->blog_posts b inner join $this->student_details s on b.user_id=s.id where published=1 ORDER BY created_at DESC LIMIT 3 offset :str";
+            } else if (is_numeric($id) and $str == "") {
                 $getBlogData = "Select * from $this->blog_posts where user_id=:id ORDER BY created_at DESC";
             } else if ($id == "" and $str == "popular") {
-                $getBlogData = "select * from $this->blog_posts where published=1 order by views DESC LIMIT 3";
+                $getBlogData = "select * from $this->blog_posts where published=1 order by views DESC LIMIT 5";
             } else if ($id == "" and $str == "recent") {
                 $getBlogData = "select * from $this->blog_posts  where published=1 order by created_at DESC LIMIT 5";
             } else if (is_numeric($id) and $str == "update") {
@@ -282,6 +291,9 @@ class Functions
             $stmt = $this->conn->prepare($getBlogData);
             if (is_numeric($id)) {
                 $stmt->bindParam(":id", $id);
+            }
+            if(is_numeric($str)){
+                $stmt->bindParam(":str", $str,PDO::PARAM_INT);
             }
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -314,7 +326,7 @@ class Functions
                      `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
                      PRIMARY KEY (`id`),
-                    FOREIGN KEY (`bid`) REFERENCES $this->blog_posts (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                    FOREIGN KEY (`bid`) REFERENCES $this->blog_posts (`id`) ON DELETE CASCADE  ON UPDATE NO ACTION,
                     FOREIGN KEY (`uid`) REFERENCES $this->student_details (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
                     ) ENGINE = InnoDB";
 
@@ -396,7 +408,7 @@ class Functions
     function deleteCommentData($id)
     {
 
-        $deleteData = "delete from $this->comment where id=:id";
+        $deleteData = "delete from $this->comment where bid=:id";
         $stmt = $this->conn->prepare($deleteData);
         $stmt->bindParam(":id", $id);
         $msg = "Comment Not Deleted";
@@ -404,6 +416,19 @@ class Functions
             $msg = "Comment Deleted Successfully";
         return $msg;
     }
+
+    function deleteLikeDislikeData($id)
+    {
+
+        $deleteData = "delete from $this->likeDislike where bid=:id";
+        $stmt = $this->conn->prepare($deleteData);
+        $stmt->bindParam(":id", $id);
+        $msg = "Comment Not Deleted";
+        if ($stmt->execute())
+            $msg = "Comment Deleted Successfully";
+        return $msg;
+    }
+
 
     function createLikeDislikeTable()
     {
@@ -416,7 +441,7 @@ class Functions
                      `like` INT NOT NULL DEFAULT 0,
                      `dislike` INT NOT NULL DEFAULT 0,
                      PRIMARY KEY (`id`),
-                    FOREIGN KEY (`bid`) REFERENCES $this->blog_posts (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                    FOREIGN KEY (`bid`) REFERENCES $this->blog_posts (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
                     FOREIGN KEY (`uid`) REFERENCES $this->student_details (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
                     ) ENGINE = InnoDB";
 
@@ -502,9 +527,9 @@ class Functions
                      `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
                      PRIMARY KEY (`id`),
-                    FOREIGN KEY (`bid`) REFERENCES $this->blog_posts (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                    FOREIGN KEY (`bid`) REFERENCES $this->blog_posts (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
                     FOREIGN KEY (`uid`) REFERENCES $this->student_details (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-                    FOREIGN KEY (`cid`) REFERENCES $this->comment (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+                    FOREIGN KEY (`cid`) REFERENCES $this->comment (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
                     ) ENGINE = InnoDB";
 
             if ($this->conn->exec($createBlogTable)) {
@@ -546,7 +571,7 @@ class Functions
     function getCommentReplyData($bid,$cid)
     {
         try {
-
+            $this->createCommentReplyTable();
             $getBlogData = "select sd.name,cr.id,cr.bid,cr.uid,cr.subcomment,cr.created_at,cr.updated_at from $this->comment_reply cr inner join $this->student_details sd on sd.id = cr.uid where cr.bid=:bid and cr.cid=:cid order by created_at ASC";
             $stmt = $this->conn->prepare($getBlogData);
             $stmt->bindParam(":bid", $bid);

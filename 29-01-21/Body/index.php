@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div class="container-fluid m-0" id="gallery">
+<div class="container-fluid m-0" id="gallery" onclick="call(this.id)">
     <h1 class="h1 text-center p-3">Gallery</h1>
     <div class="row p-3">
         <div class="col-lg-3 col-md-6 col-sm-12">

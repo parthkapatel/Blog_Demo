@@ -47,7 +47,7 @@
                 }
                 ?>
                 <div class="nav-item dropdown">
-                    <select id="dropdownbtn"  onchange="changeTheme(this.value)" class="btn btn-light dropdown-toggle btnTheme" aria-expanded="true"
+                    <select id="dropdownbtn"  onchange="changeTheme(this.value);" class="btn btn-light dropdown-toggle btnTheme" aria-expanded="true"
                             aria-haspopup="true" data-toggle="dropdown">Select Field
                         <div class="dropdown-menu" aria-labelledby="dropdownbtn">
                             <option class="dropdown-item"  value="light">Light Theme</option>

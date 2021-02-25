@@ -14,16 +14,15 @@ $conn = new Functions();
 
 if(isset($_REQUEST['data']))
 {
-
     $arr = $conn->blogDataValidation($_REQUEST['title'],$_REQUEST['desc']);
     if(isset($arr["title"]))
         $errTitle = $arr["title"];
     if(isset($arr["desc"]))
         $errDesc = $arr["desc"];
-
     $img_name= $_FILES["image"]['name'];
     $temp=$_FILES['image']['tmp_name'];
-    if(isset($_FILES['image']["name"])){
+
+    if($_FILES['image']["name"] != ""){
         if(move_uploaded_file($temp,"/opt/lampp/htdocs/Parth/29-01-21/assets/img/".$img_name) and count($arr) == 0)
         {
             if (is_numeric($_REQUEST['data']) and count($arr) == 0 ) {
@@ -34,8 +33,7 @@ if(isset($_REQUEST['data']))
                 header("Refresh:2 url=/Parth/29-01-21/blog/index.php?val=mblogs");
             }
         }
-    }else if(empty($_FILES['image']["name"])){
-
+    }else if($_FILES['image']["name"] == ""){
         if (is_numeric($_REQUEST['data']) and count($arr) == 0 ) {
             $msg = $conn->insertBlogData($_REQUEST['data'], $userId, $_REQUEST['title'], "", $_REQUEST['desc'], $_REQUEST['publish']);
             header("Refresh:2 url=/Parth/29-01-21/blog/index.php?val=mblogs");
@@ -83,8 +81,9 @@ if (isset($_REQUEST['id']) and !empty($_REQUEST['id']) and isset($_REQUEST['bid'
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script src="../js/jquery.js"></script>
+    <script src="../js/style.js"></script>
 </head>
-<body onload="selectTheme()">
+<body onload="selectTheme();">
 
 <?php include "../Header/index.php" ?>
 

@@ -30,7 +30,7 @@ session_start();
 
   </head>
 
-  <body onload="selectTheme()">
+  <body onload="selectTheme();">
         <!-- Include Header File From Header Directory -->
 
         <?php include "Header/index.php" ?>
